@@ -1,39 +1,13 @@
-import yfinance as yf
-# from apscheduler.schedulers.blocking import BlockingScheduler
 from email.message import EmailMessage
 import ssl
 import smtplib
 
+from utils.signals import calculate_signal, signals
+from utils.technical_indicators import calculates_technical_indicators
+from utils.data_retrieval import get_data
 
 symbols =  ['AAPL', 'NVDA', 'PYPL', 'GC=F']
 
-def get_data(symbol="AAPL"):
-    # Define the ticker symbol
-    
-
-    # Create a ticker object
-    data = yf.download(symbol,start="2023-01-01", interval='1d')
-
-    # Download historical data
-    return data
-
-def test_engulfing(df):
-    last_open = df.iloc[-1, :].Open
-    last_close = df.iloc[-1, :].Close
-    previous_open = df.iloc[-2, :].Open
-    previous_close = df.iloc[-2, :].Close
-
-    if (previous_open < previous_close 
-        and last_open > previous_close 
-        and last_close < previous_open):
-        return 1  # Bearish Engulfing Pattern
-    
-    elif (previous_open > previous_close
-          and last_open < previous_close 
-          and last_close > previous_open):
-        return 2  # Bullish Engulfing Pattern
-    else:
-        return 0  # No Engulfing Pattern
 
 def some_job():
   
@@ -46,16 +20,17 @@ def some_job():
     em['From'] = gmail_user
     em['To'] = gmail_user
     em['Subject'] = subject
+
     for symb in symbols:
         historical_data = get_data(symb)
-        if test_engulfing(historical_data)==1:
-            msg = msg + str(symb+": the signal is 1 bearish") + "\n"
+        df = calculates_technical_indicators(historical_data, 7)
+        close, adx, rsi, bu, bl, bm = calculate_signal(historical_data, 7)
 
-        elif test_engulfing(historical_data)==2:
-            msg = msg + str(symb+": the signal is 2 bullish") + "\n"
+        if signals(historical_data, 7)==1:
+            msg = msg + f"{symb}: the signal is 1 best time to buy at {df.loc[-1, 'Close']}\n"
+
         else:
-            msg = msg + f"{symb} no signal\n"
-
+            msg = msg + f"{symb} no signal\n" + f"close:{close}, adx:{adx}, rsi:{rsi}, bu:{bu}, bl:{bl}, bm:{bm}\n\n"
     em.set_content(msg)
 
     context = ssl.create_default_context()
