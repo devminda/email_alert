@@ -2,12 +2,17 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '0 6 * * 1-5' # At 06:00 on every day-of-week from Monday through Friday
+    # - cron: '0 6 * * 1-5' # At 06:00 on every day-of-week from Monday through Friday
+    - cros: '*/6 * * * *' # at every 6th minute
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GMAIL_PASSWORD: ${{ secret.GMAIL_PASSWORD}}
     steps:
+      - name: Tell me a secret
+        run: echo "My existing secret is ${{ secret.GMAIL_PASSWORD}}"
 
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner

@@ -1,6 +1,6 @@
 import yfinance as yf
 
-def get_data(symbol="LOLCN0000.CM"):
+def get_data(symbol="META"):
     # Define the ticker symbol
 
 
