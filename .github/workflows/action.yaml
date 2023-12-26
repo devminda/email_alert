@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GMAIL_PASSWORD: ${{ secret.GMAIL_PASSWORD}}
+      GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD}}
     steps:
       - name: Tell me a secret
-        run: echo "My existing secret is ${{ secret.GMAIL_PASSWORD}}"
+        run: echo "My existing secret is ${{ secrets.GMAIL_PASSWORD}}"
 
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner
