@@ -2,13 +2,15 @@ from src.utils.generate_email import generate_emails
 
 from src.models.model_catalog import Strategies
 from config.parameters import Parameters
+from src.plots.plot_catalog import Plots
 
 from data.instruments import symbols
 
 def instantiate_strategy(symbols, strategy_name):
     try:
         params = Parameters[strategy_name.name].value
-        generate_emails(symbols, strategy_name.value, **params)
+        plot_strategy = Plots[strategy_name.name].value 
+        generate_emails(symbols, strategy_name.value, plot_strategy, **params)
     except ValueError:
         f"Unsupported strategy: {str(strategy_name)}"
     except Exception as e:

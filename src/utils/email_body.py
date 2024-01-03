@@ -26,5 +26,5 @@ html_body = """
     </tr>
     {table_rows}
   </table>
-</body>
+  </body>
 </html>"""
