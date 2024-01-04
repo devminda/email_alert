@@ -5,10 +5,11 @@ from matplotlib.figure import Figure
 
 class PlotBase(ABC):
     
+    @staticmethod
     @abstractmethod
-    def filter_data(self, data:pd.DataFrame, window=30, **args:Any)->pd.DataFrame:
+    def filter_data(self, data:pd.DataFrame, window=30, **kwargs:Any)->pd.DataFrame:
         pass
 
     @abstractmethod
-    def plot_data(self, data:pd.DataFrame, **args:Any)->Figure:
+    def plot_data(self, data:pd.DataFrame, **kwargs:Any)->Figure:
         pass

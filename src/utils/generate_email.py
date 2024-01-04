@@ -32,22 +32,23 @@ def generate_emails(symbols:List[str], strategy:Strategybase, plots:PlotBase, **
     
     table_rows = ""
     msg = MIMEMultipart()
-    for symb in symbols:
-        historical_data = get_data(symb)
+    for symbol in symbols:
+        historical_data = get_data(symbol)
         strat = strategy()
-        df = strat.calculate_indicators(historical_data, **params['stratergy'])
-        indicators = strat.get_indicators(df, **params['stratergy'])
+        model_params = params['model']
+        df = strat.calculate_indicators(historical_data, **model_params)
+        indicators = strat.extract_latest_indicators(df, **model_params)
         indicators_str = ", ".join([f"{key.upper()}: {value}" for key, value in indicators.items()])
 
-        if strat.signals(df, **params['stratergy'])==1:
-            table_rows += f"<tr><td>{symb}</td><td style=color:green><b>Signal</b></td><td>{indicators_str}</td></tr>"
+        if strat.generate_signals(df, **model_params)==1:
+            table_rows += f"<tr><td>{symbol}</td><td style=color:green><b>Signal</b></td><td>{indicators_str}</td></tr>"
         else:
 
-            table_rows += f"<tr><td>{symb}</td><td style=color:red><b>No Signal</b></td><td>{indicators_str}</td></tr>"
+            table_rows += f"<tr><td>{symbol}</td><td style=color:red><b>No Signal</b></td><td>{indicators_str}</td></tr>"
 
         plot_diagram = plots()
         plot_df = plot_diagram.filter_data(df, **params['plot'])
-        plot_fig = plot_diagram.plot_data(plot_df, **params['plot'])
+        plot_fig = plot_diagram.plot_data(plot_df, **params['plot'], title=symbol)
         
         plot_buf = BytesIO()
         plot_fig.savefig(plot_buf, format='png')
@@ -57,13 +58,13 @@ def generate_emails(symbols:List[str], strategy:Strategybase, plots:PlotBase, **
 
         img = MIMEImage(plot_buf.read())
 
-        img.add_header('Content-Disposition', 'attachment', filename=f'{symb}.png')
-        img.add_header('Content-ID', f'<{symb}>')
+        img.add_header('Content-Disposition', 'attachment', filename=f'{symbol}.png')
+        img.add_header('Content-ID', f'<{symbol}>')
         msg.attach(img)
         
 
-    html_body1 = html_body.format(table_rows=table_rows)
-    
+    html_body_description = params['description']
+    html_body1 = html_body.format(description=html_body_description, table_rows=table_rows)
     msg.attach(MIMEText(html_body1, 'html'))    
     
     msg['From'] = gmail_user
@@ -78,4 +79,4 @@ def generate_emails(symbols:List[str], strategy:Strategybase, plots:PlotBase, **
     server.login(gmail_user, gmail_password)
     server.sendmail(gmail_user, email_list, msg.as_string())
     server.close()
-    # os.remove('plot.png')
+    

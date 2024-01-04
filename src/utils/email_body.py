@@ -17,6 +17,8 @@ html_body = """
   </style>
 </head>
 <body>
+  <h2>Description of Strategy</h2>
+  <p>{description}</p>
   <h2>Trading Signal Report</h2>
   <table>
     <tr>

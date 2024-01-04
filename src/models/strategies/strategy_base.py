@@ -1,28 +1,55 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Tuple
 import pandas as pd
 
 class Strategybase(ABC):
     """Abstract class for signal calculation."""
     
+    @staticmethod
     @abstractmethod
-    def calculate_indicators(self, data: pd.DataFrame,*args:Any)->pd.DataFrame:
-        """Calculates the indicators"""
-        pass
+    def calculate_indicators(historical_data: pd.DataFrame, rolling_window: int = 7, **kwargs) -> pd.DataFrame:
+        """
+        Calculate indicators based on historical data.
 
-    @abstractmethod
-    def get_indicators(self, data: pd.DataFrame, *args:Any) -> tuple:
-        """Passes the indicators in a tuple"""
-        pass
-
-    @abstractmethod
-    def signals(self, data: pd.DataFrame, *args:Any) -> int:
-        """Returns signals based on the calculated signals and the startegy used 
-
-        Args:
-            data (pd.DataFrame): historical data
+        Parameters:
+        - historical_data (pd.DataFrame): Historical price data.
+        - rolling_window (int): Rolling window size for calculations.
 
         Returns:
-            int: 1 if signal exist, 0 if signal is not there
+        pd.DataFrame: DataFrame with calculated indicators.
         """
-    
+
+    @abstractmethod
+    def extract_latest_indicators(self, historical_data: pd.DataFrame, rolling_window: int = 7, **kwargs) -> Tuple[float, float, float, float, float, float]:
+        """
+        Extract the latest indicators from historical data.
+
+        Parameters:
+        - historical_data (pd.DataFrame): Historical price data.
+        - rolling_window (int): Rolling window size for calculations.
+
+        Returns:
+        Tuple[float, float, float, float, float, float]: Tuple of latest indicators.
+        """
+
+    @abstractmethod
+    def generate_signals(self, historical_data: pd.DataFrame, rolling_window: int = 7, **kwargs) -> int:
+        """
+        Generate trading signals based on historical data.
+
+        Parameters:
+        - historical_data (pd.DataFrame): Historical price data.
+        - rolling_window (int): Rolling window size for calculations.
+
+        Returns:
+        int: Trading signal (1 for buy, 0 for hold/sell).
+        """
+
+    @abstractmethod
+    def __str__(self) -> str:
+        """
+        String representation of the strategy.
+
+        Returns:
+        str: String representation.
+        """
