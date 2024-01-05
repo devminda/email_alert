@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 import os
-import base64
 from io import BytesIO
 
 from email.mime.multipart import MIMEMultipart
