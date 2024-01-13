@@ -7,7 +7,7 @@ import matplotlib.gridspec as gridspec
 class BollingerBandADXRSIStrategyPlot(PlotBase):
             
     @staticmethod
-    def filter_data(data, window, **kwargs):
+    def filter_data(data, window=30, **kwargs):
         data = data.iloc[-window:].copy()
         return data
     

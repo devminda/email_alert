@@ -1,3 +1,4 @@
+import traceback
 from src.utils.generate_email import generate_emails
 
 from src.models.model_catalog import Strategies
@@ -15,6 +16,7 @@ def instantiate_strategy(symbols, strategy_name):
         f"Unsupported strategy: {str(strategy_name)}"
     except Exception as e:
         print("Hit an exception", str(e))
+        traceback.print_exc()
 
 def run():
     for strategy in Strategies:

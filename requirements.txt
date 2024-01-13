@@ -4,3 +4,4 @@ yfinance==0.2.31
 python-dotenv==1.0.0
 matplotlib==3.4.3
 matplotlib-inline==0.1.2
+feed-parser==6.0.11

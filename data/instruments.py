@@ -1,1 +1,2 @@
-symbols =  ['AAPL', 'PYPL', 'GC=F', 'META', 'NVDA', 'UBER']
+symbols =  ['AAPL', #]
+             'PYPL', 'GC=F', 'META', 'NVDA', 'UBER']
