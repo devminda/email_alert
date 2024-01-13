@@ -7,9 +7,9 @@ class PlotBase(ABC):
     
     @staticmethod
     @abstractmethod
-    def filter_data(data:pd.DataFrame, window=30, **kwargs:Any)->pd.DataFrame:
+    def filter_data(data:pd.DataFrame, **kwargs:Any)->pd.DataFrame:
         pass
-
+    
     @abstractmethod
     def plot_data(self, data:pd.DataFrame, **kwargs:Any)->Figure:
         pass

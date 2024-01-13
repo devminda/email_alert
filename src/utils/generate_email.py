@@ -35,6 +35,8 @@ def generate_emails(symbols:List[str], strategy:Strategybase, plots:PlotBase, **
         historical_data = get_data(symbol)
         strat = strategy()
         model_params = params['model']
+        model_params['symbol'] = symbol
+
         df = strat.calculate_indicators(historical_data, **model_params)
         indicators = strat.extract_latest_indicators(df, **model_params)
         indicators_str = ", ".join([f"{key.upper()}: {value}" for key, value in indicators.items()])
