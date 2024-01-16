@@ -2,14 +2,15 @@ name: run main.py
 
 on:
   schedule:
-    # - cron: '*/30 * * * *' # at every 6th minute
-    - cron: '11 4 * * 1-5' # At 06:00 on every day-of-week from Monday through Friday
+    - cron: '*/10 * * * *' # at every 6th minute
+    # - cron: '11 4 * * 1-5' # At 06:00 on every day-of-week from Monday through Friday
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD}}
+      API_KEY: ${{ secrets.API_KEY}}
     steps:
       - name: Tell me a secret
         run: echo "My existing secret is ${{ secrets.GMAIL_PASSWORD}}"
