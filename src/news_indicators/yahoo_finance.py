@@ -38,7 +38,7 @@ class YahooFinanceIndicator(NewsIndicatorBase):
             data_list.append(data_dict)
         return data_list
     
-    def calculate_sentiment(self, payload, max_retries=2, delay_seconds=2) -> list:
+    def calculate_sentiment(self, payload, max_retries=3, delay_seconds=4) -> list:
         API_URL = "https://api-inference.huggingface.co/models/mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis"
         headers = {"Authorization": f"Bearer {os.getenv('API_KEY')}"}
         
